@@ -26,7 +26,7 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 
 1. **Flutter & Dart Compiled Code**
 
-   Please download Flutter & Dart for development from [here](https://flutter.io/get-started/install/), and fllow the instruction to complete the configuration for either iOS/Android development.
+   Please download Flutter & Dart for development from [here](https://flutter.io/get-started/install/), and follow the instruction to complete the configuration for either iOS/Android development.
 
    For now the lastest release of Flutter is [Flutter Release Preview 2](https://developers.googleblog.com/2018/09/flutter-release-preview-2-pixel-perfect.html).
 
