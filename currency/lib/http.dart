@@ -30,20 +30,24 @@ class _HomePageState extends State<HomePage> {
   String path;
   Map<String, double> countryMap;
   Database database;
-  // final String currencyUrl =
-  //     'http://data.fixer.io/api/latest?access_key=848680d4b0eaee2e313344d4343010aa';
+  final String currencyUrl =
+      'http://data.fixer.io/api/latest?access_key=848680d4b0eaee2e313344d4343010aa';
   // ifconfig | grep "inet " | grep -v 127.0.0.1
-  final String currencyUrl = 'http://192.168.0.102:3001';
+  // final String currencyUrl = 'http://192.168.0.102:3001';
   final String countryCode = 'https://restcountries.eu/rest/v2/name/';
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    List<Map> list;
     base = 'Singapore';
     debug = '';
     calcNumber = 0.0;
     countryMap = {};
+    this._dbinit();
+    addMap(base);
+  }
+  void _dbinit() async {
+    List<Map> list;
     var databasesPath = await getDatabasesPath();
     path = databasesPath + "/demo.db";
     print(path);
@@ -51,13 +55,17 @@ class _HomePageState extends State<HomePage> {
         onCreate: (Database db, int version) async {
       try {
         list = await db.rawQuery('SELECT country FROM COUNTRIES');
+        print(1);
       } catch (e) {
         await db.execute(
             "CREATE TABLE COUNTRIES (id INTEGER PRIMARY KEY, country TEXT)");
+            list = await db.rawQuery('SELECT country FROM COUNTRIES');
+            print('init2');
+    print(list);
       }
     });
+    print('init');
     print(list);
-    addMap(base);
   }
 
   @override
@@ -83,7 +91,9 @@ class _HomePageState extends State<HomePage> {
         countryMap[newConturyName] = currency;
       });
       await database
-          .rawInsert('INSERT INTO COUNTRIES(name) VALUES(?)', [newConturyName]);
+          .rawInsert('INSERT INTO COUNTRIES(country) VALUES(?)', [newConturyName]);
+      var x = await database.rawQuery('SELECT country FROM COUNTRIES');
+            print(x);
     } catch (e) {
       print(e);
     }
@@ -127,7 +137,7 @@ class _HomePageState extends State<HomePage> {
         countryMap.remove(country);
       });
       await database
-          .rawDelete('DELETE FROM COUNTRIES WHERE name = ?', [country]);
+          .rawDelete('DELETE FROM COUNTRIES WHERE country = ?', [country]);
     } else
       _showDialog();
   }
