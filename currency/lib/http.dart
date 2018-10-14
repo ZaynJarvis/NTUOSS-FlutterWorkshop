@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import './SliderContent.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HTTPFlutter extends StatelessWidget {
@@ -26,7 +27,9 @@ class _HomePageState extends State<HomePage> {
   String debug;
   String base;
   double calcNumber;
+  String path;
   Map<String, double> countryMap;
+  Database database;
   // final String currencyUrl =
   //     'http://data.fixer.io/api/latest?access_key=848680d4b0eaee2e313344d4343010aa';
   // ifconfig | grep "inet " | grep -v 127.0.0.1
@@ -34,19 +37,34 @@ class _HomePageState extends State<HomePage> {
   final String countryCode = 'https://restcountries.eu/rest/v2/name/';
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    List<Map> list;
     base = 'Singapore';
     debug = '';
     calcNumber = 0.0;
     countryMap = {};
+    var databasesPath = await getDatabasesPath();
+    path = databasesPath + "/demo.db";
+    print(path);
+    database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+      try {
+        list = await db.rawQuery('SELECT country FROM COUNTRIES');
+      } catch (e) {
+        await db.execute(
+            "CREATE TABLE COUNTRIES (id INTEGER PRIMARY KEY, country TEXT)");
+      }
+    });
+    print(list);
     addMap(base);
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     countryController.dispose();
     numberController.dispose();
+    await database.close();
     super.dispose();
   }
 
@@ -64,6 +82,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         countryMap[newConturyName] = currency;
       });
+      await database
+          .rawInsert('INSERT INTO COUNTRIES(name) VALUES(?)', [newConturyName]);
     } catch (e) {
       print(e);
     }
@@ -101,12 +121,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _deleteContent(country) {
-    if (country != base)
+  void _deleteContent(country) async {
+    if (country != base) {
       setState(() {
         countryMap.remove(country);
       });
-    else
+      await database
+          .rawDelete('DELETE FROM COUNTRIES WHERE name = ?', [country]);
+    } else
       _showDialog();
   }
 
