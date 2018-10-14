@@ -56,18 +56,14 @@ class _HomePageState extends State<HomePage> {
     try {
       var newCountry = await http.get(Uri.encodeFull(countryCode + item),
           headers: {"Accept": "application/json"});
-      print(countryCode + item);
-
       newConturyCode = jsonDecode(newCountry.body)[0]['currencies'][0]['code'];
       newConturyName = jsonDecode(newCountry.body)[0]['name'];
       var response = await http.get(Uri.encodeFull(currencyUrl),
           headers: {"Accept": "application/json"});
-      print(jsonDecode(response.body));
       double currency = jsonDecode(response.body)['rates'][newConturyCode];
       setState(() {
         countryMap[newConturyName] = currency;
       });
-      print(countryMap);
     } catch (e) {
       print(e);
     }
@@ -79,10 +75,39 @@ class _HomePageState extends State<HomePage> {
     return 'Success';
   }
 
+  _dismissKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alert"),
+          content: new Text("You cannot delete your base."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _deleteContent(country) {
-    setState(() {
-      countryMap.remove(country);
-    });
+    if (country != base)
+      setState(() {
+        countryMap.remove(country);
+      });
+    else
+      _showDialog();
   }
 
   void _resetBase(country) {
@@ -117,56 +142,59 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             Flexible(
-              child: ListView.builder(
-                itemCount: countryMap.isNotEmpty ? countryMap.length : 0,
-                itemBuilder: (BuildContext context, int index) {
-                  try {
-                    double price = calcNumber *
-                        countryMap[countryMap.keys.elementAt(index)] /
-                        countryMap[base];
-                    // return SliderContent(countryMap, index+1, price);
-                    return Slidable(
-                      delegate: SlidableDrawerDelegate(),
-                      actionExtentRatio: 0.2,
-                      child: Container(
-                        color: Colors.grey[800],
-                        margin: EdgeInsets.symmetric(vertical: 2.0),
-                        padding: EdgeInsets.symmetric(horizontal: 24.0),
-                        height: 70.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(countryMap.keys.elementAt(index)),
-                            Text((price).toStringAsFixed(2)),
-                          ],
+              child: GestureDetector(
+                child: ListView.builder(
+                  itemCount: countryMap.isNotEmpty ? countryMap.length : 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    try {
+                      double price = calcNumber *
+                          countryMap[countryMap.keys.elementAt(index)] /
+                          countryMap[base];
+                      // return SliderContent(countryMap, index+1, price);
+                      return Slidable(
+                        delegate: SlidableDrawerDelegate(),
+                        actionExtentRatio: 0.2,
+                        child: Container(
+                          color: Colors.grey[800],
+                          margin: EdgeInsets.symmetric(vertical: 2.0),
+                          padding: EdgeInsets.symmetric(horizontal: 24.0),
+                          height: 70.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(countryMap.keys.elementAt(index)),
+                              Text((price).toStringAsFixed(2)),
+                            ],
+                          ),
                         ),
-                      ),
-                      actions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Set as base',
-                          color: Colors.grey[900],
-                          icon: Icons.settings,
-                          foregroundColor: Colors.cyanAccent,
-                          onTap: () =>
-                              _resetBase(countryMap.keys.elementAt(index)),
-                        ),
-                      ],
-                      secondaryActions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Delete',
-                          color: Colors.grey[900],
-                          icon: Icons.delete_forever,
-                          foregroundColor: Colors.redAccent,
-                          onTap: () =>
-                              _deleteContent(countryMap.keys.elementAt(index)),
-                        ),
-                      ],
-                    );
-                  } catch (e) {
-                    print(e);
-                    return null;
-                  }
-                },
+                        actions: <Widget>[
+                          IconSlideAction(
+                            caption: 'Set as base',
+                            color: Colors.grey[900],
+                            icon: Icons.settings,
+                            foregroundColor: Colors.cyanAccent,
+                            onTap: () =>
+                                _resetBase(countryMap.keys.elementAt(index)),
+                          ),
+                        ],
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.grey[900],
+                            icon: Icons.delete_forever,
+                            foregroundColor: Colors.redAccent,
+                            onTap: () => _deleteContent(
+                                countryMap.keys.elementAt(index)),
+                          ),
+                        ],
+                      );
+                    } catch (e) {
+                      print(e);
+                      return null;
+                    }
+                  },
+                ),
+                onTap: () => _dismissKeyboard(context),
               ),
               fit: FlexFit.tight,
             ),
@@ -183,7 +211,10 @@ class _HomePageState extends State<HomePage> {
                             hintText: 'Based on Country: $base',
                           ),
                           controller: countryController,
+                          keyboardAppearance: Brightness.dark,
                           onSubmitted: (data) => getJsonData(),
+                          // implement with picker.
+                          keyboardType: TextInputType.text,
                         ),
                       ),
                       IconButton(
@@ -203,6 +234,8 @@ class _HomePageState extends State<HomePage> {
                           decoration: InputDecoration(
                             hintText: 'Price',
                           ),
+                          keyboardType: TextInputType.number,
+                          keyboardAppearance: Brightness.dark,
                           controller: numberController,
                           onChanged: (data) => putNumber(),
                           onSubmitted: (data) {
