@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import './SliderContent.dart';
-import 'package:sqflite/sqflite.dart';
+import './dbHelper.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HTTPFlutter extends StatelessWidget {
@@ -29,51 +28,44 @@ class _HomePageState extends State<HomePage> {
   double calcNumber;
   String path;
   Map<String, double> countryMap;
-  Database database;
-  final String currencyUrl =
-      'http://data.fixer.io/api/latest?access_key=848680d4b0eaee2e313344d4343010aa';
+  DatabaseHelper database;
+
+  // final String currencyUrl =
+  //     'http://data.fixer.io/api/latest?access_key=848680d4b0eaee2e313344d4343010aa';
   // ifconfig | grep "inet " | grep -v 127.0.0.1
-  // final String currencyUrl = 'http://192.168.0.102:3001';
+  final String currencyUrl = 'http://192.168.0.102:3001';
   final String countryCode = 'https://restcountries.eu/rest/v2/name/';
 
   @override
   void initState() {
     super.initState();
-    base = 'Singapore';
     debug = '';
     calcNumber = 0.0;
     countryMap = {};
-    this._dbinit();
-    addMap(base);
-  }
-  void _dbinit() async {
-    List<Map> list;
-    var databasesPath = await getDatabasesPath();
-    path = databasesPath + "/demo.db";
-    print(path);
-    database = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      try {
-        list = await db.rawQuery('SELECT country FROM COUNTRIES');
-        print(1);
-      } catch (e) {
-        await db.execute(
-            "CREATE TABLE COUNTRIES (id INTEGER PRIMARY KEY, country TEXT)");
-            list = await db.rawQuery('SELECT country FROM COUNTRIES');
-            print('init2');
-    print(list);
-      }
-    });
-    print('init');
-    print(list);
+    database = DatabaseHelper();
+    base = 'Singapore';
+    (() async {
+      base = await database.findBase() ?? 'Singapore';
+      await database.saveCountry(base);
+      await database.updateBase(base);
+      List<Map> countries = await database.getAllCountries();
+      countries.forEach((f) {
+        addMap(f['country']);
+      });
+    })();
   }
 
   @override
   void dispose() async {
     countryController.dispose();
     numberController.dispose();
-    await database.close();
+    database.close();
     super.dispose();
+  }
+
+  void debugDB() async {
+    List<Map> countries = await database.getAllCountries();
+    print(countries);
   }
 
   void addMap(item) async {
@@ -90,10 +82,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         countryMap[newConturyName] = currency;
       });
-      await database
-          .rawInsert('INSERT INTO COUNTRIES(country) VALUES(?)', [newConturyName]);
-      var x = await database.rawQuery('SELECT country FROM COUNTRIES');
-            print(x);
+      await database.saveCountry(newConturyName);
+      debugDB();
     } catch (e) {
       print(e);
     }
@@ -110,11 +100,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showDialog() {
-    // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // return object of type Dialog
         return AlertDialog(
           title: new Text("Alert"),
           content: new Text("You cannot delete your base."),
@@ -136,13 +124,15 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         countryMap.remove(country);
       });
-      await database
-          .rawDelete('DELETE FROM COUNTRIES WHERE country = ?', [country]);
+      await database.deleteCountry(country);
+      debugDB();
     } else
       _showDialog();
   }
 
-  void _resetBase(country) {
+  void _resetBase(country) async {
+    database.updateBase(country);
+    debugDB();
     setState(() {
       base = country;
     });
