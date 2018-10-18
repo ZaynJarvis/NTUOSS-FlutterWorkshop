@@ -43,3 +43,37 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
     Use `flutter doctor` in your terminal/cmd to check everything is correct with at least one editor/IDE is working.
 
 ---
+
+### Agenda
+* Introduction to Mobile App Development Framework: Flutter
+    * Key Advandatages:
+        * Hot reload
+        * Cross Platform
+        * Compiled to Native Code
+        * Support untyped and typed data declaration
+    * Key differences:
+        * No built-in UI designing Kit
+        * Inline styles
+        * Special Cupertino Style Component for iOS development.
+* `Hello World App` of Flutter
+    * Classes in Flutter
+    * State Machine in Flutter
+    * Data arguements in Classes
+    * Class initialization shortcut
+    * Add assets
+    * Unit testing in Flutter
+* `Currency App` build from scratch
+    * HTTP request in Flutter
+    * Local storage using SQFlite Database
+    * Code Factorization and Redux
+    * Change app icon and app name for deployment
+* `TODO App` Redux framework in Flutter
+    * Store
+    * Actions
+    * Dispatch
+    * ViewModel
+* `Speech Recognition App` Method Channel
+    * Implement native APIs that Flutter does not support
+
+---
+
