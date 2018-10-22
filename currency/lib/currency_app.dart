@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:currency/get_exchange_rate.dart';
 
 class CurrencyApp extends StatefulWidget {
@@ -41,6 +42,37 @@ class _CurrencyAppState extends State<CurrencyApp> {
     });
   }
 
+  void _deleteContent(country) async {
+    if (country != _baseCountry) {
+      setState(() {
+        _countryMap.remove(country);
+      });
+    } else
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Alert"),
+            content: new Text("You cannot delete your base."),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+  }
+
+  void _resetBase(country) async {
+    setState(() {
+      _baseCountry = country;
+    });
+  }
+
   @override
   void dispose() async {
     _countryController.dispose();
@@ -75,11 +107,42 @@ class _CurrencyAppState extends State<CurrencyApp> {
                             _countryMap[_countryMap.keys.elementAt(index)] /
                             _countryMap[_baseCountry])
                         .toStringAsFixed(2);
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(_countryMap.keys.elementAt(index)),
-                        Text(price),
+
+                    return Slidable(
+                      delegate: SlidableDrawerDelegate(),
+                      actionExtentRatio: 0.2,
+                      child: Container(
+                        color: Colors.grey[800],
+                        margin: EdgeInsets.symmetric(vertical: 2.0),
+                        padding: EdgeInsets.symmetric(horizontal: 24.0),
+                        height: 70.0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(_countryMap.keys.elementAt(index)),
+                            Text(price),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Set as base',
+                          color: Colors.grey[900],
+                          icon: Icons.settings,
+                          foregroundColor: Colors.cyanAccent,
+                          onTap: () =>
+                              _resetBase(_countryMap.keys.elementAt(index)),
+                        ),
+                      ],
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.grey[900],
+                          icon: Icons.delete_forever,
+                          foregroundColor: Colors.redAccent,
+                          onTap: () =>
+                              _deleteContent(_countryMap.keys.elementAt(index)),
+                        ),
                       ],
                     );
                   },
