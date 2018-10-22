@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:currency/get_exchange_rate.dart';
+import 'package:currency/dbHelper.dart';
 
 class CurrencyApp extends StatefulWidget {
   @override
@@ -14,14 +15,27 @@ class _CurrencyAppState extends State<CurrencyApp> {
   Map _countryMap;
   String _baseCountry;
   String _inputPrice;
+  DatabaseHelper database;
+
   @override
   void initState() {
     super.initState();
     _countryMap = {};
-    _baseCountry = 'Singapore';
+    database = DatabaseHelper();
     (() async {
-      Map record = await _findExchangeRate(_baseCountry);
-      _constructCountryMap(record);
+      final storedBase = await database.findBase();
+      if (storedBase != null)
+        _baseCountry = storedBase;
+      else {
+        _baseCountry = 'Singapore';
+        await database.saveCountry(_baseCountry);
+        await database.updateBase(_baseCountry);
+      }
+      List<Map> countries = await database.getAllCountries();
+      countries.forEach((item) async {
+        Map record = await _findExchangeRate(item['country']);
+        _constructCountryMap(record);
+      });
     })();
   }
 
@@ -47,30 +61,15 @@ class _CurrencyAppState extends State<CurrencyApp> {
       setState(() {
         _countryMap.remove(country);
       });
-    } else
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text("Alert"),
-            content: new Text("You cannot delete your base."),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text("Close"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      await database.deleteCountry(country);
+    }
   }
 
   void _resetBase(country) async {
     setState(() {
       _baseCountry = country;
     });
+    database.updateBase(country);
   }
 
   @override
@@ -164,6 +163,8 @@ class _CurrencyAppState extends State<CurrencyApp> {
                             onSubmitted: (data) async {
                               Map record = await _findExchangeRate(data);
                               _constructCountryMap(record);
+                              await database
+                                  .saveCountry(record.keys.elementAt(0));
                               _countryController.text = '';
                             },
                           ),
