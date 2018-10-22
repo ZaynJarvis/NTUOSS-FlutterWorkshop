@@ -12,7 +12,7 @@ class _CurrencyAppState extends State<CurrencyApp> {
   final _priceController = TextEditingController();
   Map _countryMap;
   String _baseCountry;
-
+  String _inputPrice;
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,11 @@ class _CurrencyAppState extends State<CurrencyApp> {
     return response;
   }
 
-  void _priceOnChange([String data]) {}
+  void _priceOnChange([String data]) {
+    setState(() {
+      _inputPrice = _priceController.text;
+    });
+  }
 
   @override
   void dispose() async {
@@ -61,12 +65,21 @@ class _CurrencyAppState extends State<CurrencyApp> {
                 child: ListView.builder(
                   itemCount: _countryMap.isNotEmpty ? _countryMap.length : 0,
                   itemBuilder: (BuildContext ctx, int index) {
+                    double multiplier;
+                    try {
+                      multiplier = double.parse(_inputPrice);
+                    } catch (e) {
+                      multiplier = 0.0;
+                    }
+                    String price = (multiplier *
+                            _countryMap[_countryMap.keys.elementAt(index)] /
+                            _countryMap[_baseCountry])
+                        .toStringAsFixed(2);
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(_countryMap.keys.elementAt(index)),
-                        Text((_countryMap[_countryMap.keys.elementAt(index)])
-                            .toStringAsFixed(2)),
+                        Text(price),
                       ],
                     );
                   },
