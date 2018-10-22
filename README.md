@@ -28,15 +28,15 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 
    Please download Flutter & Dart for development from [here](https://flutter.io/get-started/install/), and follow the instruction to complete the configuration for either iOS/Android development.
 
-   For now the lastest release of Flutter is [Flutter Release Preview 2](https://developers.googleblog.com/2018/09/flutter-release-preview-2-pixel-perfect.html).
+   For now, the latest release of Flutter is [Flutter Release Preview 2.](https://developers.googleblog.com/2018/09/flutter-release-preview-2-pixel-perfect.html).
 
    The next version of Flutter will finally be 1.0 🎉
 
-   **Warning: We highly recommend you to download and config Flutter prior to coming to this workshop as it may take 30 - 60 minutes to complete the process. If you do not have Flutter correctly installed, you might only be able to attend a info-session of mobile app dev in Flutter rather than a hands-on session.**
+   **Warning: We highly recommend you to download and config Flutter prior to coming to this workshop as it may take 30 - 60 minutes to complete the process. If you do not have Flutter correctly installed, you might only be able to attend an info-session of mobile app dev in Flutter rather than a hands-on session.**
 
 2. **Visual Studio Code (or Xcode, Android Studio, IntelliJ for Dart Programming)**
 
-    Use the recommanded editor/IDE for Flutter development. Refer to [here](https://flutter.io/get-started/editor/).
+    Use the recommended editor/IDE for Flutter development. Refer to [here](https://flutter.io/get-started/editor/).
 
 3. **Complete Setup**
     
@@ -46,7 +46,7 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 
 ### Agenda
 * Introduction to Mobile App Development Framework: Flutter
-    * Key Advandatages:
+    * Key Advantages:
         * Hot reload
         * Cross Platform
         * Compiled to Native Code
@@ -58,7 +58,7 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 * `Hello World App` of Flutter
     * Classes in Flutter
     * State Machine in Flutter
-    * Data arguements in Classes
+    * Data arguments in Classes
     * Class initialization shortcut
     * Add assets
     * Unit testing in Flutter
@@ -77,3 +77,76 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 
 ---
 
+### `Project 0`:
+**Live Streaming of this workshop.**
+[![NTUOSS-FlutterWorkshop](./img/NTUOSS-Logo.png)](https://www.youtube.com/watch?v=WHGb2NOMiQ0)
+
+#### Flutter
+* Key Advandatages:
+    * Hot reload 
+    * Cross Platform
+    * Compiled to Native Code
+    * Support untyped and typed data declaration 
+    > `var`, `dynamic` vs `String`, `double`, `Map<String, double>`
+    * build-in unit testing
+
+* Key differences:
+    * No built-in UI designing Kit
+    * Inline styles
+    > `Colors`, `Alignment`, `EdgeInsect`
+    * Extended styles
+    > `Icons`, `TextDecoration` and `AnimationController`
+    * [Cupertino Style Component for iOS development](https://flutter.io/widgets/cupertino/)
+
+---
+### `Project 1`
+* `Hello World App` of Flutter
+    * Classes in Flutter
+    * State Machine in Flutter
+    * Arguments in Stateful Classes
+    * Class initialization shortcut
+    * Add assets
+    * Unit testing in Flutter
+
+With Flutter installed, Check everything is correct with 
+```bash
+flutter doctor
+``` 
+You should get a similar output like this (Making one of the editor work is enough)
+```bash
+Doctor summary (to see all details, run flutter doctor -v):
+[✓] Flutter (Channel beta, v0.9.4, on Mac OS X 10.14 18A391, locale en-SG)
+[✓] Android toolchain - develop for Android devices (Android SDK 28.0.1)
+[✓] iOS toolchain - develop for iOS devices (Xcode 10.0)
+[✓] Android Studio (version 3.1)
+[✓] IntelliJ IDEA Community Edition (version 2018.2)
+[✓] VS Code (version 1.28.2)
+[✓] Connected devices (1 available)
+
+• No issues found!
+```
+> If you do not have connected devices error, connect your phone to computer (For iOS developer make sure your device has trusted your computer to install app on in. Read [here](https://flutter.io/setup-macos/#platform-setup).)
+
+> You can connect a simulator(Xcode) or an emulator(Android Studio) for development as well.
+
+Then we can get started by running
+```bash
+flutter create myapp
+```
+This command will create a flutter project folder for you named `myapp`
+
+Then we can change directory into our project folder and start to run the project
+```bash
+cd myapp
+flutter run
+```
+Now you should have a counter app running in your device.
+
+---
+### `Project 2`
+* `Currency App` build from scratch
+    * HTTP request in Flutter
+    * Local storage using SQFlite Database
+    * Code Factorization and Redux
+    * Change app icon and app name for deployment
+    
