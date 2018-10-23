@@ -98,8 +98,14 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
     > `Icons`, `TextDecoration` and `AnimationController`
     * [Cupertino Style Component for iOS development](https://flutter.io/widgets/cupertino/)
 
+#### use `git checkout <branch-name>` to get the source code of different apps.
+
 ---
 ### `Project 1`
+```bash
+# > To view the source code.
+$ git checkout feature/currencyapp
+```
 * `Hello World App` of Flutter
     * Classes in Flutter
     * State Machine in Flutter
@@ -142,10 +148,18 @@ flutter run
 ```
 Now you should have a counter app running in your device.
 
+
 ---
 ### `Project 2`
+```bash
+# > To view the source code.
+$ git checkout feature/currencyapp
+$ git log --oneline
+
+```
 * `Currency App` build from scratch
     * HTTP request in Flutter
+    ``
     * Local storage using SQFlite Database
     * Code Factorization and Redux
     * Change app icon and app name for deployment
