@@ -155,12 +155,25 @@ Now you should have a counter app running in your device.
 # > To view the source code.
 $ git checkout feature/currencyapp
 $ git log --oneline
-
+e5c3b21 integrate with redux framework
+d097c30 local database integration
+35dc753 slidable component with delete and rebase function
+34bf7f7 add price controller
+67e5f8a http request for country exchange rate
+40c264c currency app layout
 ```
 * `Currency App` build from scratch
     * HTTP request in Flutter
-    ``
+        ```bash
+        git checkout 67e5f8a
+        ```
     * Local storage using SQFlite Database
+        ```bash
+        git checkout d097c30
+        ```
     * Code Factorization and Redux
+        ```bash
+        git checkout e5c3b21
+        ```
     * Change app icon and app name for deployment
-    
+        
