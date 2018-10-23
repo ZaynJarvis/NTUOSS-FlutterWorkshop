@@ -39,12 +39,11 @@ class DatabaseHelper {
         'CREATE TABLE $tableName($countryName TEXT PRIMARY KEY, $isBase INTEGER )');
   }
 
-  Future<int> saveCountry(String country) async {
+  Future<void> saveCountry(String country) async {
     var dbClient = await db;
-    if (!await this.hasCountry(country))
-      return await dbClient.insert(tableName, {'country': country, 'base': 0});
-    else
-      return 0;
+    if (!await this.hasCountry(country)) {
+      await dbClient.insert(tableName, {countryName: country, isBase: 0});
+    }
   }
 
   Future<List> getAllCountries() async {

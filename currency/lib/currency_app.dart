@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:currency/get_exchange_rate.dart';
 import 'package:currency/dbHelper.dart';
+import 'package:currency/form_field.dart';
+import 'package:currency/slider_wrapper.dart';
 
 class CurrencyApp extends StatefulWidget {
   @override
@@ -10,192 +9,38 @@ class CurrencyApp extends StatefulWidget {
 }
 
 class _CurrencyAppState extends State<CurrencyApp> {
-  final _countryController = TextEditingController();
-  final _priceController = TextEditingController();
-  Map _countryMap;
-  String _baseCountry;
-  String _inputPrice;
   DatabaseHelper database;
 
   @override
   void initState() {
     super.initState();
-    _countryMap = {};
     database = DatabaseHelper();
-    (() async {
-      final storedBase = await database.findBase();
-      if (storedBase != null)
-        _baseCountry = storedBase;
-      else {
-        _baseCountry = 'Singapore';
-        await database.saveCountry(_baseCountry);
-        await database.updateBase(_baseCountry);
-      }
-      List<Map> countries = await database.getAllCountries();
-      countries.forEach((item) async {
-        Map record = await _findExchangeRate(item['country']);
-        _constructCountryMap(record);
-      });
-    })();
-  }
-
-  void _constructCountryMap(Map record) {
-    setState(() {
-      _countryMap.addAll(record);
-    });
-  }
-
-  Future<Map> _findExchangeRate(String data) async {
-    Map response = await getExchangeRate(data);
-    return response;
-  }
-
-  void _priceOnChange([String data]) {
-    setState(() {
-      _inputPrice = _priceController.text;
-    });
-  }
-
-  void _deleteContent(country) async {
-    if (country != _baseCountry) {
-      setState(() {
-        _countryMap.remove(country);
-      });
-      await database.deleteCountry(country);
-    }
-  }
-
-  void _resetBase(country) async {
-    setState(() {
-      _baseCountry = country;
-    });
-    database.updateBase(country);
   }
 
   @override
-  void dispose() async {
-    _countryController.dispose();
-    _priceController.dispose();
+  void dispose() {
+    database.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Currency App',
-      theme: ThemeData.dark(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Currency'),
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            children: <Widget>[
-              Flexible(
-                child: ListView.builder(
-                  itemCount: _countryMap.isNotEmpty ? _countryMap.length : 0,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    double multiplier;
-                    try {
-                      multiplier = double.parse(_inputPrice);
-                    } catch (e) {
-                      multiplier = 0.0;
-                    }
-                    String price = (multiplier *
-                            _countryMap[_countryMap.keys.elementAt(index)] /
-                            _countryMap[_baseCountry])
-                        .toStringAsFixed(2);
-
-                    return Slidable(
-                      delegate: SlidableDrawerDelegate(),
-                      actionExtentRatio: 0.2,
-                      child: Container(
-                        color: Colors.grey[800],
-                        margin: EdgeInsets.symmetric(vertical: 2.0),
-                        padding: EdgeInsets.symmetric(horizontal: 24.0),
-                        height: 70.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(_countryMap.keys.elementAt(index)),
-                            Text(price),
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Set as base',
-                          color: Colors.grey[900],
-                          icon: Icons.settings,
-                          foregroundColor: Colors.cyanAccent,
-                          onTap: () =>
-                              _resetBase(_countryMap.keys.elementAt(index)),
-                        ),
-                      ],
-                      secondaryActions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Delete',
-                          color: Colors.grey[900],
-                          icon: Icons.delete_forever,
-                          foregroundColor: Colors.redAccent,
-                          onTap: () =>
-                              _deleteContent(_countryMap.keys.elementAt(index)),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Base Country: $_baseCountry'),
-                            controller: _countryController,
-                            keyboardType: TextInputType.text,
-                            onSubmitted: (data) async {
-                              Map record = await _findExchangeRate(data);
-                              _constructCountryMap(record);
-                              await database
-                                  .saveCountry(record.keys.elementAt(0));
-                              _countryController.text = '';
-                            },
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.send,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            decoration:
-                                InputDecoration(hintText: 'Enter price: '),
-                            controller: _priceController,
-                            keyboardType: TextInputType.number,
-                            onChanged: _priceOnChange,
-                            onSubmitted: (data) {},
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Currency'),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              child: SliderWrapper(),
+            ),
+            Divider(),
+            InputField(
+              database: database,
+            ),
+          ],
         ),
       ),
     );
