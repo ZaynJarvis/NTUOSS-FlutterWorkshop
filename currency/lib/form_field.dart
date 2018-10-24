@@ -44,7 +44,6 @@ class InputFieldState extends State<InputField> {
                       keyboardType: TextInputType.text,
                       onSubmitted: (data) async {
                         Map record = await getExchangeRate(data);
-                        print(record);
                         if (record.isNotEmpty) {
                           viewModel.addCountryMapAction(record);
                           await widget.database
@@ -55,12 +54,6 @@ class InputFieldState extends State<InputField> {
                     );
                   },
                 ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.send,
-                ),
-                onPressed: () {},
               ),
             ],
           ),

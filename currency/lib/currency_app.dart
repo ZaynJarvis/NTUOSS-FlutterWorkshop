@@ -23,6 +23,10 @@ class _CurrencyAppState extends State<CurrencyApp> {
     super.dispose();
   }
 
+  _dismissKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +38,10 @@ class _CurrencyAppState extends State<CurrencyApp> {
         child: Column(
           children: <Widget>[
             Flexible(
+                child: GestureDetector(
               child: SliderWrapper(),
-            ),
+              onTap: () => _dismissKeyboard(context),
+            )),
             Divider(),
             InputField(
               database: database,
