@@ -60,30 +60,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               fit: BoxFit.cover),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
+        child: GestureDetector(
+          child: Center(
+            child: Text(
               'iOS $_counter',
               style: Theme.of(context).textTheme.display4,
             ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-            ),
-            FloatingActionButton(
-              onPressed: () => _setCounterState(_increment),
-              tooltip: 'Increment',
-              child: new Icon(Icons.add),
-              backgroundColor: Colors.blueAccent,
-            ),
-            FloatingActionButton(
-              onPressed: () => _setCounterState(_decrement),
-              tooltip: 'Decreament',
-              child: new Icon(Icons.remove),
-              backgroundColor: Colors.blueAccent,
-            ),
-          ],
+          ),
+          onTap: () => _setCounterState(_decrement),
+          onDoubleTap: () => _setCounterState(_increment),
         ),
       ),
     );
