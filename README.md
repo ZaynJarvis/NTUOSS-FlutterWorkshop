@@ -121,10 +121,7 @@ $ git checkout feature/currencyapp
 
 With Flutter installed, Check everything is correct with 
 ```bash
-flutter doctor
-``` 
-You should get a similar output like this (Making one of the editor work is enough)
-```bash
+$ flutter doctor
 Doctor summary (to see all details, run flutter doctor -v):
 [✓] Flutter (Channel beta, v0.9.4, on Mac OS X 10.14 18A391, locale en-SG)
 [✓] Android toolchain - develop for Android devices (Android SDK 28.0.1)
@@ -148,8 +145,8 @@ This command will create a flutter project folder for you named `myapp`
 
 Then we can change directory into our project folder and start to run the project
 ```bash
-cd myapp
-flutter run
+$ cd myapp
+$ flutter run
 ```
 Now you should have a counter app running in your device.
 
@@ -170,21 +167,21 @@ d097c30 local database integration
 * `Currency App` build from scratch
     * HTTP request in Flutter
         ```bash
-        git checkout 67e5f8a
+        $ git checkout 67e5f8a
         ```
     * Local storage using SQFlite Database
         ```bash
-        git checkout d097c30
+        $ git checkout d097c30
         ```
     * Code Factorization and Redux
         ```bash
-        git checkout e5c3b21
+        $ git checkout e5c3b21
         ```
         Checkout this [link](https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html) for more on redux.
         ![''](./img/redux_model.png)
     * Change app icon and app name for deployment
         ```bash
-        git checkout 1c269b9
+        $ git checkout 1c269b9
         ```    
 ---
 
