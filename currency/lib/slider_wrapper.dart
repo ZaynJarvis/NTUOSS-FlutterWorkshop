@@ -30,11 +30,13 @@ class SliderWrapper extends StatelessWidget {
 class _ViewModel {
   final Map countryMap;
   final String price;
+  final String baseCountry;
   final Function calcPrice;
 
   _ViewModel({
     @required this.countryMap,
     @required this.price,
+    @required this.baseCountry,
     @required this.calcPrice,
   });
 
@@ -57,6 +59,7 @@ class _ViewModel {
             .toStringAsFixed(2);
         return calcPrice;
       },
+      baseCountry: store.state.baseCountry,
     );
   }
 
@@ -66,8 +69,10 @@ class _ViewModel {
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
           countryMap == other.countryMap &&
+          baseCountry == other.baseCountry &&
           price == other.price;
 
   @override
-  int get hashCode => countryMap.hashCode ^ price.hashCode;
+  int get hashCode =>
+      countryMap.hashCode ^ price.hashCode ^ baseCountry.hashCode;
 }
