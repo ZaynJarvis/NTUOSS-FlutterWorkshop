@@ -20,7 +20,7 @@ Artwork by Chuan Bin
 Feedback & Error Reports: We will send out the link for collecting feedback as usual.
 ​	For further discussion or cooperation please contact @ [zaynjarvis@gmail.com](zaynjarvis@gmail.com).
 
-***Disclaimer: This workshop is for educational purposes only. The redux framework is forked from [brianegan/flutter_architecture_samples](https://github.com/brianegan/flutter_architecture_samples). And information regarding Unity concepts are retrieved from [Flutter Document](https://flutter.io). No prototype or outcome of any type is intended for commercial use.***
+***Disclaimer: This workshop is for educational purposes only. The redux framework is forked from [brianegan/flutter_architecture_samples](https://github.com/brianegan/flutter_architecture_samples). And information regarding Flutter concepts are retrieved from [Flutter Document](https://flutter.io). No prototype or outcome of any type is intended for commercial use.***
 
 ---
 ### Optional Setup
