@@ -1,6 +1,6 @@
 # NTUOSS Flutter Workshop
 
-##### by [Zayn Jarvis](https://github.com/ZaynJarvis) from [NTU Open Source Society](https://www.ntuoss.com)
+**By [Zayn Jarvis](https://github.com/ZaynJarvis) from [NTU Open Source Society](https://www.ntuoss.com)**
 
 
 ![](img/flutter_banner.jpeg)
@@ -9,23 +9,22 @@ Artwork by Chuan Bin
 
 ---
 
-### Workshop Details
+| Workshop Details |                                                                                       |
+| :---:            | ---                                                                                   |
+| When             | Friday, 26 Oct 2018. 6:30 PM - 8:30 PM                                                |
+| Where            | LT1, NTU North Spine Plaza                                                            |
+| Who              | NTU Open Source Society                                                               |
+| Questions        | We will be hosting a Pigeon Hole Live for collecting questions regarding the workshop |
 
-**When**: Friday, 26 Oct 2018. 6:30 PM - 8:30 PM.
-**Where**: LT1, NTU North Spine Plaza
-**Who**: NTU Open Source Society
 
-**Questions**: We will be hosting a Pigeon Hole Live for collecting questions regarding the workshop.
+Feedback & Error Reports: We will send out the link for collecting feedback as usual. ​For further discussion or cooperation please contact [zaynjarvis@gmail.com](zaynjarvis@gmail.com).
 
-Feedback & Error Reports: We will send out the link for collecting feedback as usual.
-​	For further discussion or cooperation please contact @ [zaynjarvis@gmail.com](zaynjarvis@gmail.com).
-
-***Disclaimer: This workshop is for educational purposes only. The redux framework is forked from [brianegan/flutter_architecture_samples](https://github.com/brianegan/flutter_architecture_samples). And information regarding Unity concepts are retrieved from [Flutter Document](https://flutter.io). No prototype or outcome of any type is intended for commercial use.***
+**_Disclaimer: This workshop is for educational purposes only. The redux framework is forked from [brianegan/flutter_architecture_samples](https://github.com/brianegan/flutter_architecture_samples). And information regarding Unity concepts are retrieved from [Flutter Document](https://flutter.io). No prototype or outcome of any type is intended for commercial use._**
 
 ---
-### Optional Setup
+## Setup
 
-1. **Flutter & Dart Compiled Code**
+* Flutter & Dart Compiled Code
 
    Please download Flutter & Dart for development from [here](https://flutter.io/get-started/install/), and follow the instruction to complete the configuration for either iOS/Android development.
 
@@ -35,18 +34,19 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
 
    **Warning: We highly recommend you to download and config Flutter prior to coming to this workshop as it may take 30 - 60 minutes to complete the process. If you do not have Flutter correctly installed, you might only be able to attend an info-session of mobile app dev in Flutter rather than a hands-on session.**
 
-2. **Visual Studio Code (or Xcode, Android Studio, IntelliJ for Dart Programming)**
+* Visual Studio Code (or Xcode, Android Studio, IntelliJ for Dart Programming)
 
     Use the recommended editor/IDE for Flutter development. Refer to [here](https://flutter.io/get-started/editor/).
 
-3. **Complete Setup**
+* Complete Setup
     
     Use `flutter doctor` in your terminal/cmd to check everything is correct with at least one editor/IDE is working.
 
 ---
 
 ### Agenda
-* Introduction to Mobile App Development Framework: Flutter
+* [Live Streaming Site](#project-0)
+* [Introduction to Mobile App Development Framework: Flutter](#flutter)
     * Key Advantages:
         * Hot reload
         * Cross Platform
@@ -56,35 +56,35 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
         * No built-in UI designing Kit
         * Inline styles
         * Special Cupertino Style Component for iOS development.
-* `Hello World App` of Flutter
+* [`Hello World App` of Flutter](#hello-world)
     * Classes in Flutter
     * State Machine in Flutter
     * Data arguments in Classes
     * Class initialization shortcut
     * Add assets
     * Unit testing in Flutter
-* `Currency App` build from scratch
+* [`Currency App` build from scratch](#currency)
     * HTTP request in Flutter
     * Local storage using SQFlite Database
     * Code Factorization and Redux
     * Change app icon and app name for deployment
-* `TODO App` Redux framework in Flutter
+* [`TODO App` Redux framework in Flutter](#todo)
     * Store & State
     * Actions
     * Reducers
     * Middleware
     * Dispatch
     * ViewModel
-* `Speech Recognition App` Method Channel
+* [`Speech Recognition App` Method Channel](#voice-recognition)
     * Implement native APIs that Flutter does not support
 
 ---
 
-### `Project 0`:
-**Live Streaming of this workshop.**
+## Live Streaming:
+
 [![NTUOSS-FlutterWorkshop](./img/NTUOSS-Logo.png)](https://www.youtube.com/watch?v=WHGb2NOMiQ0)
 
-#### Flutter
+## Flutter
 * Key Advandatages:
     * Hot reload 
     * Cross Platform
@@ -103,10 +103,10 @@ Feedback & Error Reports: We will send out the link for collecting feedback as u
     > `GestureDetector`
     * [Cupertino Style Component for iOS development](https://flutter.io/widgets/cupertino/)
 
-#### use `git checkout <branch-name>` to get the source code of different apps.
+**use `git checkout <branch-name>` to get the source code of different apps**
 
 ---
-### `Project #1`
+## HELLO WORLD
 ```bash
 # > To view the source code.
 $ git checkout feature/currencyapp
@@ -152,7 +152,7 @@ Now you should have a counter app running in your device.
 
 
 ---
-### `Project #2`
+## CURRENCY
 ```bash
 $ # > To view the source code.
 $ git checkout feature/currencyapp
@@ -185,7 +185,7 @@ d097c30 local database integration
         ```    
 ---
 
-### `Project #3`
+### TODO
 ```bash
 $ # > To view the source code.
 $ cd .. # Go back to the parent directory
@@ -203,7 +203,7 @@ $ code . # if you have VScode installed
     * ViewModel
 
 --- 
-### `Project #4`
+### VOICE RECOGNITION
 * `Speech Recognition App` Method Channel
     * Implement native APIs that Flutter does not support
 
